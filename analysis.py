@@ -11,7 +11,7 @@ def learn_code(file):
     for i in file:
         how_learn_code = i[6]
         if (";" in how_learn_code):                                       # checks if there is more than 1 answer in that question
-            tempfile = re.split("[;]", i[6])                              # if yes, separate each of them and append to the where_learn_code
+            tempfile = re.split("[;]", how_learn_code)                              # if yes, separate each of them and append to the where_learn_code
             for j in tempfile:
                 where_learn_code.append(j)
         else:                                                             # append to where_learn_code if only one answer
