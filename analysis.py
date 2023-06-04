@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 # returns the way how the respondents learn coding
 def learn_code(file):
-    ctr = 0
     where_learn_code = []
     freq = {}
 
