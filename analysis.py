@@ -139,8 +139,8 @@ def coding_exp_and_comp(file):
             else:
                 if (years_of_coding == "More than 50 years"):           # for the respondents who answered "more than 50 years", I used 51 as  
                     list_of_code_exp.append(51)                         # their years of experience to have an int value so I can analyze it
-                elif (years_of_coding == "Less than 1 year"):           # for the respondents who answered "less than 1 year", I used 0.1 as their years of experience to
-                    list_of_code_exp.append(0.1)
+                elif (years_of_coding == "Less than 1 year"):           # for the respondents who answered "less than 1 year", I used 0.1 as 
+                    list_of_code_exp.append(0.1)                        # their years of experience to have an int value so I can analyze it
                 else:
                     list_of_code_exp.append(int(years_of_coding))
 
