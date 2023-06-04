@@ -1,6 +1,6 @@
-# Analysis-of-Stack-Overflow-Annual-Developer-Survey
+# Analysis of Stack Overflow Annual Developer Survey
 
-This shows the analysis of data of the Stack Overflow Annual Developer Survey using the guide questions below:
+This shows the analysis of data of the Stack Overflow Annual Developer Survey(referenced from https://insights.stackoverflow.com/survey) using the guide questions below:
 
   * What is the most popular method of learning how to code?
   * Are you more likely to get a job as a developer if you have a master's degree?
