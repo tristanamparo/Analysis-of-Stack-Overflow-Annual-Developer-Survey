@@ -158,67 +158,76 @@ def coding_exp_and_comp(file):
     return averages
 
 
-with open("./survey_results_public.csv", "r") as file:
-    csvreader = csv.reader(file)
-    next(csvreader)
+if __name__ == "__main__":
+    with open("./survey_results_public.csv", "r") as file:
+        csvreader = csv.reader(file)
+        next(csvreader)
 
-    file = convert_to_list(csvreader)
+        file = convert_to_list(csvreader)
 
-    total_respondents = no_of_respondents(file)
+        total_respondents = no_of_respondents(file)
 
-    learn_code_dic = learn_code(file)
-    most_common_learn_code = max(learn_code_dic)
-    most_common_learn_code_number = max(learn_code_dic.values())
-    print(
-        str(most_common_learn_code)
-        + " is the most common way of the respondents to learn coding with "
-        + str(most_common_learn_code_number)
-        + " out of "
-        + str(total_respondents)
-        + " respondents"
-    )
+        # prints the most common way of respondents to learn coding
+        learn_code_dic = learn_code(file)
+        most_common_learn_code = max(learn_code_dic)
+        most_common_learn_code_number = max(learn_code_dic.values())
+        print(
+            str(most_common_learn_code)
+            + " is the most common way of the respondents to learn coding with "
+            + str(most_common_learn_code_number)
+            + " out of "
+            + str(total_respondents)
+            + " respondents"
+        )
 
-    developer_has_masteral = job_with_masters(file)[0]
-    developer_dont_have_masteral = job_with_masters(file)[1]
-    print(
-        "there is "
-        + str(developer_has_masteral)
-        + " developers that has masteral while there are "
-        + str(developer_dont_have_masteral)
-        + " developers that dont have masteral"
-    )
+        # prints the number of developers that have masteral and developers with no masteral
+        developer_has_masteral = job_with_masters(file)[0]
+        developer_dont_have_masteral = job_with_masters(file)[1]
+        print(
+            "there is "
+            + str(developer_has_masteral)
+            + " developers that has masteral while there are "
+            + str(developer_dont_have_masteral)
+            + " developers that dont have masteral"
+        )
 
-    online_resources = online_resources_2_learn_code(file)
-    online_resource = max(online_resources)
-    max_value = max(online_resources.values())
-    print(str(max_value) + " respondents online resources was " + str(online_resource))
+        # prints the most common online source of the resopondents to learn coding
+        online_resources = online_resources_2_learn_code(file)
+        online_resource = max(online_resources)
+        max_value = max(online_resources.values())
+        print(
+            str(max_value) + " respondents online resources was " + str(online_resource)
+        )
 
-    comp = compensation(file)
-    highest_comp_job = max(comp)
-    highest_comp = round(max(comp.values()))
-    print(
-        highest_comp_job
-        + " is the highest paying job with $"
-        + str(highest_comp)
-        + " yearly"
-    )
+        # prints the highest paying job of a developer
+        comp = compensation(file)
+        highest_comp_job = max(comp)
+        highest_comp = round(max(comp.values()))
+        print(
+            highest_comp_job
+            + " is the highest paying job with $"
+            + str(highest_comp)
+            + " yearly"
+        )
 
-    # print(sorted(coding_exp(file).items(), key=lambda x: x[0]))
+        # prints the years of coding experience with corresponding average yearly compensation in ascending order
+        # also prints a scatter plot of relationship of coding experience and compensation
+        comp_based_exp = coding_exp_and_comp(file)
+        sorted_exp = dict(sorted(comp_based_exp.items(), key=lambda item: item[1]))
 
-    comp_based_exp = coding_exp_and_comp(file)
-    print(comp_based_exp)
+        for exp, comp in sorted_exp.items():
+            comp = "{:,}".format(round(comp))
 
-    plt.scatter(*zip(*comp_based_exp.items()))
-    plt.xlabel("Years of Experience")
-    plt.ylabel("Average Compensation")
-    plt.show()
+            if exp == 0.5:
+                print("Less than 1 year of experience: $" + comp + " per year")
+            elif exp == 51:
+                print("More than 50 years of experience: $" + comp + " per year")
+            else:
+                print(str(exp) + " years of experience: $" + comp + " per year")
 
-"""
-x = "rer;dsa /d; sasa"
-y = "rara"
-if re.split("[;]", x) == True:
-    print("yes")
-else:
-    print("false")
-print(re.split("[;]", x))
-"""
+        plt.scatter(*zip(*comp_based_exp.items()))
+        plt.xlabel("Years of Experience")
+        plt.ylabel("Average Compensation")
+        plt.show()
+
+        print("As we can see in the graph, coding experience doesn't affect the level of pay of the developers")
