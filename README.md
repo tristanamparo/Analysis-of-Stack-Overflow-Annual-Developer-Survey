@@ -7,6 +7,7 @@ This shows the analysis of data of the Stack Overflow Annual Developer Survey(re
  * The most common way to learn code online is Technical Documentation with 88.13% of the developers.
  * Senior Executive (C-Suite, VP, etc.) is the highest paying job with more than $100k average yearly.
  * The coding experience doesn't really affect the level of pay of the developers.
+ ![Figure_1](https://github.com/tristanamparo/Analysis-of-Stack-Overflow-Annual-Developer-Survey/assets/104198389/c55562cb-f76d-427c-af62-e1eb04c6b07f)
 
 
 # What I learned
