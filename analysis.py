@@ -167,6 +167,8 @@ def coding_exp_and_comp(file):
     for exp in averages:
         averages[exp] = averages[exp] / float(counts[exp])
 
+    averages.pop('Other (please specify):')                                 # remove 'other' in analyzing the data
+    
     return averages
 
 
@@ -181,19 +183,21 @@ if __name__ == "__main__":
 
         total_respondents = no_of_respondents(file)
 
-        
-        learn_code_dic = learn_code(file)
-        most_common_learn_code = max(learn_code_dic, key=lambda x: learn_code_dic[x])
-        most_common_learn_code_val = learn_code_dic.get(most_common_learn_code)
-        learn_code_no_answer = no_answer(file, 6)
+        # prints the most common way of learning code
+        learn_code_dic = learn_code(file)                                                   
+        most_common_learn_code = max(learn_code_dic, key=lambda x: learn_code_dic[x])       # gets the most common way of learning code
+        most_common_learn_code_val = learn_code_dic.get(most_common_learn_code)             # gets the value of the most common way of learning code
+        learn_code_no_answer = no_answer(file, 6)                                           # gets the number of respondents who answered NA
 
         learn_code_percentage = round((most_common_learn_code_val / (total_respondents - learn_code_no_answer)) * 100, 2)
-        print(str(most_common_learn_code) + " is the most common way to learn coding with " + str(learn_code_percentage) + "%" + " of the respondents" )
+        print(str(most_common_learn_code) 
+              + " is the most common way to learn coding with " 
+              + str(learn_code_percentage) + "%" + " of the respondents" )
 
 
         # prints the number of developers that have masteral and developers with no masteral
-        developer_has_masteral = job_with_masters(file)[0]
-        developer_dont_have_masteral = job_with_masters(file)[1]
+        developer_has_masteral = job_with_masters(file)[0]                                  # output of the function job_with_masters is
+        developer_dont_have_masteral = job_with_masters(file)[1]                            # tuple so we need indexing
         print("there is "
             + str(developer_has_masteral)
             + " developers that has masteral while there are "
@@ -203,12 +207,14 @@ if __name__ == "__main__":
 
         # prints the most common online source of the resopondents to learn coding
         online_resources = online_resources_2_learn_code(file)
-        most_common_online_resource = max(online_resources, key=lambda x: online_resources[x])
-        most_common_online_resource_val = online_resources.get(most_common_online_resource)
-        online_resource_no_answer = no_answer(file, 7)
+        most_common_online_resource = max(online_resources, key=lambda x: online_resources[x])  # gets the most common online resource
+        most_common_online_resource_val = online_resources.get(most_common_online_resource)     # gets the value of the most common online resource
+        online_resource_no_answer = no_answer(file, 7)                                          # gets the number of respondents who answered NA
 
         online_res_percentage = round((most_common_online_resource_val / (total_respondents - online_resource_no_answer)) * 100, 2)
-        print(str(most_common_online_resource) + " is the most common online resource to learn coding with " + str(online_res_percentage) + "%" + " of the respondents" )
+        print(str(most_common_online_resource) 
+              + " is the most common online resource to learn coding with " 
+              + str(online_res_percentage) + "%" + " of the respondents" )
 
         # prints the highest paying job of a developer
         comp = compensation(file)
