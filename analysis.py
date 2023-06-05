@@ -171,6 +171,7 @@ def coding_exp_and_comp(file):
 
 
 
+
 if __name__ == "__main__":
     with open("./survey_results_public.csv", "r") as file:
         csvreader = csv.reader(file)
@@ -183,11 +184,11 @@ if __name__ == "__main__":
         
         learn_code_dic = learn_code(file)
         most_common_learn_code = max(learn_code_dic, key=lambda x: learn_code_dic[x])
-        most_common_learn_code_number = learn_code_dic.get(most_common_learn_code)
+        most_common_learn_code_val = learn_code_dic.get(most_common_learn_code)
         learn_code_no_answer = no_answer(file, 6)
 
-        percentage = round((most_common_learn_code_number / (total_respondents - learn_code_no_answer)) * 100, 2)
-        print(str(most_common_learn_code) + " is the most common way to learn coding with " + str(percentage) + "%" + " of the respondents" )
+        learn_code_percentage = round((most_common_learn_code_val / (total_respondents - learn_code_no_answer)) * 100, 2)
+        print(str(most_common_learn_code) + " is the most common way to learn coding with " + str(learn_code_percentage) + "%" + " of the respondents" )
 
 
         # prints the number of developers that have masteral and developers with no masteral
@@ -202,13 +203,16 @@ if __name__ == "__main__":
 
         # prints the most common online source of the resopondents to learn coding
         online_resources = online_resources_2_learn_code(file)
-        online_resource = max(online_resources)
-        max_value = max(online_resources.values())
-        print(str(max_value) + " respondents online resources was " + str(online_resource))
+        most_common_online_resource = max(online_resources, key=lambda x: online_resources[x])
+        most_common_online_resource_val = online_resources.get(most_common_online_resource)
+        online_resource_no_answer = no_answer(file, 7)
+
+        online_res_percentage = round((most_common_online_resource_val / (total_respondents - online_resource_no_answer)) * 100, 2)
+        print(str(most_common_online_resource) + " is the most common online resource to learn coding with " + str(online_res_percentage) + "%" + " of the respondents" )
 
         # prints the highest paying job of a developer
         comp = compensation(file)
-        highest_comp_job = max(comp)
+        highest_comp_job = max(comp, key=lambda x: comp[x])
         highest_comp = round(max(comp.values()))
         print(
             highest_comp_job
@@ -222,6 +226,17 @@ if __name__ == "__main__":
         comp_based_exp = coding_exp_and_comp(file)
         sorted_exp = dict(sorted(comp_based_exp.items(), key=lambda item: item[1]))
 
+
+        plt.scatter(*zip(*comp_based_exp.items()))
+        plt.xlabel("Years of Experience")
+        plt.ylabel("Average Compensation")
+        plt.show()
+
+        print("As we can see in the graph, coding experience doesn't affect the level of pay of the developers")
+
+
+########## uncomment to list the average yearly pay per age ###############
+'''
         for exp, comp in sorted_exp.items():
             comp = "{:,}".format(round(comp))
 
@@ -231,12 +246,5 @@ if __name__ == "__main__":
                 print("More than 50 years of experience: $" + comp + " per year")
             else:
                 print(str(exp) + " years of experience: $" + comp + " per year")
-
-        plt.scatter(*zip(*comp_based_exp.items()))
-        plt.xlabel("Years of Experience")
-        plt.ylabel("Average Compensation")
-        plt.show()
-
-        print("As we can see in the graph, coding experience doesn't affect the level of pay of the developers")
-
+'''
 
