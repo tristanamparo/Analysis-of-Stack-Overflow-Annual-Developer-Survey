@@ -76,7 +76,7 @@ def convert_to_list(file):
     return new_list
 
 
-                                                                            # reutrns a tuple that checks to see how many developers have Masteral Degree
+# reutrns a tuple that checks to see how many developers have Masteral Degree
 def job_with_masters(file):
     have_masters_and_developer = 0
     dont_have_masters_but_developer = 0
