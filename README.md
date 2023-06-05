@@ -10,3 +10,7 @@ This shows the analysis of data of the Stack Overflow Annual Developer Survey(re
 
 
 # What I learned
+  * separate strings with delimiter
+  * count the duplicates in a list and store them in a dictionary
+  * plot a scatter plot using the matplotlib.pyplot module
+  * read a csv file line by line
