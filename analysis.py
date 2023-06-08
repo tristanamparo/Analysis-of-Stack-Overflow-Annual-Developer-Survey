@@ -22,8 +22,14 @@ def learn_code(file):
             freq[i] += 1
         else:
             freq[i] = 1
+    total_respondents = no_of_respondents(file)
+    blank_answer = no_answer(file, 6) 
+    for source, value in freq.items():
+        freq[source] = round((value/(total_respondents - blank_answer)) * 100, 2)
 
-    return freq
+    learn_code_dict = sorted(freq.items(), key=lambda x:x[1])
+
+    return dict(learn_code_dict)
 
 
 def online_resources_2_learn_code(file):
@@ -167,11 +173,33 @@ def coding_exp_and_comp(file):
     for exp in averages:
         averages[exp] = averages[exp] / float(counts[exp])
 
-    averages.pop('Other (please specify):')                                 # remove 'other' in analyzing the data
+    #averages.pop('Other (please specify):')                                 # remove 'other' in analyzing the data
     
     return averages
 
+def create_graph(dict_, graph_title):
+    keys = list(dict_.keys())
+    values = list(dict_.values())
 
+    fig, ax = plt.subplots(figsize = (17, 8))
+
+    ax.barh(keys, values)
+    for s in ['top', 'bottom', 'left', 'right']:
+        ax.spines[s].set_visible(False)
+
+    ax.xaxis.set_ticks_position('none')
+    ax.yaxis.set_ticks_position('none')
+
+    for i in ax.patches:
+        plt.text(i.get_width()+0.2, i.get_y()+0.5,
+            str(round((i.get_width()), 2)) + " %",
+            fontsize = 11, fontweight ='bold',
+            color ='grey')
+
+    plt.yticks(fontsize=5.5)
+    plt.title(graph_title)
+    plt.show()
+    
 
 
 if __name__ == "__main__":
@@ -184,7 +212,10 @@ if __name__ == "__main__":
         total_respondents = no_of_respondents(file)
 
         # prints the most common way of learning code
-        learn_code_dic = learn_code(file)                                                   
+        learn_code_dic = learn_code(file)
+        create_graph(learn_code_dic, "Most common way of developers to learn code")
+
+        '''                                               
         most_common_learn_code = max(learn_code_dic, key=lambda x: learn_code_dic[x])       # gets the most common way of learning code
         most_common_learn_code_val = learn_code_dic.get(most_common_learn_code)             # gets the value of the most common way of learning code
         learn_code_no_answer = no_answer(file, 6)                                           # gets the number of respondents who answered NA
@@ -193,8 +224,8 @@ if __name__ == "__main__":
         print(str(most_common_learn_code) 
               + " is the most common way to learn coding with " 
               + str(learn_code_percentage) + "%" + " of the respondents" )
-
-
+        '''
+'''
         # prints the number of developers that have masteral and developers with no masteral
         developer_has_masteral = job_with_masters(file)[0]                                  # output of the function job_with_masters is
         developer_dont_have_masteral = job_with_masters(file)[1]                            # tuple so we need indexing
@@ -239,6 +270,7 @@ if __name__ == "__main__":
         plt.show()
 
         print("As we can see in the graph, coding experience doesn't affect the level of pay of the developers")
+'''
 
 
 ########## uncomment to list the average yearly pay per age ###############
@@ -252,6 +284,6 @@ if __name__ == "__main__":
                 print("More than 50 years of experience: $" + comp + " per year")
             else:
                 print(str(exp) + " years of experience: $" + comp + " per year")
-sasa
+
 '''
 
