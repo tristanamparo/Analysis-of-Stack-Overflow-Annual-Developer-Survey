@@ -203,7 +203,7 @@ def create_graph(dict_, graph_title):
 
 
 if __name__ == "__main__":
-    with open("./survey_results_public.csv", "r") as file:
+    with open("../survey_results_public.csv", "r") as file:
         csvreader = csv.reader(file)
         next(csvreader)
 
