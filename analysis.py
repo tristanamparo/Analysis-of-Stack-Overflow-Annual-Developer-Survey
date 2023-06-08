@@ -252,5 +252,6 @@ if __name__ == "__main__":
                 print("More than 50 years of experience: $" + comp + " per year")
             else:
                 print(str(exp) + " years of experience: $" + comp + " per year")
+sasa
 '''
 
