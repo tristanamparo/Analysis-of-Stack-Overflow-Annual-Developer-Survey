@@ -22,10 +22,14 @@ def learn_code(file):
             freq[i] += 1
         else:
             freq[i] = 1
+
     total_respondents = no_of_respondents(file)
     blank_answer = no_answer(file, 6) 
+
     for source, value in freq.items():
-        freq[source] = round((value/(total_respondents - blank_answer)) * 100, 2)
+        freq[source] = round(
+            (value/(total_respondents - blank_answer)) * 100, 
+            2)
 
     learn_code_dict = sorted(freq.items(), key=lambda x:x[1])
 
@@ -50,7 +54,17 @@ def online_resources_2_learn_code(file):
         else:
             freq[i] = 1
 
-    return freq
+    total_respondents = no_of_respondents(file)
+    blank_answer = no_answer(file, 7)
+
+    for source, value in freq.items():
+        freq[source] = round(
+            (value/(total_respondents - blank_answer)) * 100, 
+            2)
+
+    learn_code_online_dict = sorted(freq.items(), key=lambda x:x[1])
+
+    return dict(learn_code_online_dict)
 
 
 # returns the number of respondents who have no answer
@@ -135,7 +149,9 @@ def compensation(file):
     for jobs in averages:
         averages[jobs] = averages[jobs] / float(counts[jobs])
 
-    return averages
+    comp = sorted(averages.items(), key=lambda x:x[1])
+
+    return dict(comp)
 
 
 # gets the coding experience of the respondents with corresponding compensations
@@ -174,10 +190,12 @@ def coding_exp_and_comp(file):
         averages[exp] = averages[exp] / float(counts[exp])
 
     #averages.pop('Other (please specify):')                                 # remove 'other' in analyzing the data
-    
-    return averages
 
-def create_graph(dict_, graph_title):
+    coding_exp = sorted(averages.items(), key=lambda x:x[0])
+    
+    return dict(coding_exp)
+
+def create_graph(dict_, graph_title, x_label, y_label, label_font_size, string_ext = ""):
     keys = list(dict_.keys())
     values = list(dict_.values())
 
@@ -192,12 +210,14 @@ def create_graph(dict_, graph_title):
 
     for i in ax.patches:
         plt.text(i.get_width()+0.2, i.get_y()+0.5,
-            str(round((i.get_width()), 2)) + " %",
-            fontsize = 11, fontweight ='bold',
+            str(round((i.get_width()), 2)) + string_ext,
+            fontsize = label_font_size, fontweight ='bold',
             color ='grey')
 
     plt.yticks(fontsize=5.5)
     plt.title(graph_title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
     plt.show()
     
 
@@ -213,7 +233,24 @@ if __name__ == "__main__":
 
         # prints the most common way of learning code
         learn_code_dic = learn_code(file)
-        create_graph(learn_code_dic, "Most common way of developers to learn code")
+        create_graph(learn_code_dic, "Most common way of developers to learn code", "percentage", "Ways of Learning Code", 11, "%")
+
+
+        learn_code_online_dic = online_resources_2_learn_code(file)
+        create_graph(learn_code_online_dic, "Most common online source to learn code", "percentage", "Online Resources", 11, "%")
+
+
+        comp = compensation(file)
+        create_graph(comp, "Developer Job Compensation",  "Average yearly compensation(in $)", "Developer job", 8)
+
+
+        coding_exp_comp = coding_exp_and_comp(file)
+        create_graph(coding_exp_comp, "Coding Experience of Developer and their Yearly Compensation", "Average yearly compensation(in $)", "Coding Experience", 6)
+        plt.scatter(*zip(*coding_exp_comp.items()))
+        plt.title("Coding Experience of Developer and their Yearly Compensation")
+        plt.xlabel("Years of Experience")
+        plt.ylabel("Average Compensation")
+        plt.show()
 
         '''                                               
         most_common_learn_code = max(learn_code_dic, key=lambda x: learn_code_dic[x])       # gets the most common way of learning code
