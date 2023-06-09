@@ -87,7 +87,7 @@ def no_of_respondents(file):
     return ctr
 
 
-# converts the read file into list so I can easily manipulate it
+# converts the read file into list for easy manipulation
 def convert_to_list(file):
     new_list = []
     for i in file:
@@ -110,7 +110,7 @@ def job_with_masters(file):
             else:
                 dont_have_masters_but_developer += 1
 
-    return (have_masters_and_developer, dont_have_masters_but_developer)
+    return {"Developer with Masters":have_masters_and_developer, "Developers without Masters":dont_have_masters_but_developer}
 
 
 # returns a dictionary of jobs, with corresponding average yearly compensation
@@ -189,33 +189,33 @@ def coding_exp_and_comp(file):
     for exp in averages:
         averages[exp] = averages[exp] / float(counts[exp])
 
-    #averages.pop('Other (please specify):')                                 # remove 'other' in analyzing the data
-
     coding_exp = sorted(averages.items(), key=lambda x:x[0])
     
     return dict(coding_exp)
 
+# create graph function
 def create_graph(dict_, graph_title, x_label, y_label, label_font_size, string_ext = ""):
-    keys = list(dict_.keys())
+    keys = list(dict_.keys())                                                # putting the keys and values of dict into a list      
     values = list(dict_.values())
 
-    fig, ax = plt.subplots(figsize = (17, 8))
+    fig, ax = plt.subplots(figsize = (17, 8))                               # size of figure
 
-    ax.barh(keys, values)
-    for s in ['top', 'bottom', 'left', 'right']:
+    ax.barh(keys, values)                                                   # horizontal bar plot
+
+    for s in ['top', 'bottom', 'left', 'right']:                            # remove axes spines
         ax.spines[s].set_visible(False)
 
-    ax.xaxis.set_ticks_position('none')
+    ax.xaxis.set_ticks_position('none')                                     # remove axes spines
     ax.yaxis.set_ticks_position('none')
 
-    for i in ax.patches:
+    for i in ax.patches:                                                    # adds annotation to the bars
         plt.text(i.get_width()+0.2, i.get_y()+0.5,
             str(round((i.get_width()), 2)) + string_ext,
             fontsize = label_font_size, fontweight ='bold',
             color ='grey')
 
-    plt.yticks(fontsize=5.5)
-    plt.title(graph_title)
+    plt.yticks(fontsize=5.5)                                                # font size of each y ticks
+    plt.title(graph_title)                                                  # adds title and label of x and y
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.show()
@@ -235,15 +235,19 @@ if __name__ == "__main__":
         learn_code_dic = learn_code(file)
         create_graph(learn_code_dic, "Most common way of developers to learn code", "percentage", "Ways of Learning Code", 11, "%")
 
-
+        # prints the most common online source of learning to code
         learn_code_online_dic = online_resources_2_learn_code(file)
         create_graph(learn_code_online_dic, "Most common online source to learn code", "percentage", "Online Resources", 11, "%")
 
-
+        # prints the average yearly compensation of each Developer Job
         comp = compensation(file)
         create_graph(comp, "Developer Job Compensation",  "Average yearly compensation(in $)", "Developer job", 8)
 
+        # prints the relationship of developers with masteral and developers without masteral
+        dev_masters = job_with_masters(file)
+        create_graph(dev_masters, "Number of Developers with and without Masteral", "No. of Respondents", "", 15)
 
+        # prints the relationship of average yearly compensation to the coding experience of developers
         coding_exp_comp = coding_exp_and_comp(file)
         create_graph(coding_exp_comp, "Coding Experience of Developer and their Yearly Compensation", "Average yearly compensation(in $)", "Coding Experience", 6)
         plt.scatter(*zip(*coding_exp_comp.items()))
@@ -251,76 +255,3 @@ if __name__ == "__main__":
         plt.xlabel("Years of Experience")
         plt.ylabel("Average Compensation")
         plt.show()
-
-        '''                                               
-        most_common_learn_code = max(learn_code_dic, key=lambda x: learn_code_dic[x])       # gets the most common way of learning code
-        most_common_learn_code_val = learn_code_dic.get(most_common_learn_code)             # gets the value of the most common way of learning code
-        learn_code_no_answer = no_answer(file, 6)                                           # gets the number of respondents who answered NA
-
-        learn_code_percentage = round((most_common_learn_code_val / (total_respondents - learn_code_no_answer)) * 100, 2)
-        print(str(most_common_learn_code) 
-              + " is the most common way to learn coding with " 
-              + str(learn_code_percentage) + "%" + " of the respondents" )
-        '''
-'''
-        # prints the number of developers that have masteral and developers with no masteral
-        developer_has_masteral = job_with_masters(file)[0]                                  # output of the function job_with_masters is
-        developer_dont_have_masteral = job_with_masters(file)[1]                            # tuple so we need indexing
-        print("there is "
-            + str(developer_has_masteral)
-            + " developers that has masteral while there are "
-            + str(developer_dont_have_masteral)
-            + " developers that dont have masteral"
-        )
-
-        # prints the most common online source of the resopondents to learn coding
-        online_resources = online_resources_2_learn_code(file)
-        most_common_online_resource = max(online_resources, key=lambda x: online_resources[x])  # gets the most common online resource
-        most_common_online_resource_val = online_resources.get(most_common_online_resource)     # gets the value of the most common online resource
-        online_resource_no_answer = no_answer(file, 7)                                          # gets the number of respondents who answered NA
-
-        online_res_percentage = round((most_common_online_resource_val / (total_respondents - online_resource_no_answer)) * 100, 2)
-        print(str(most_common_online_resource) 
-              + " is the most common online resource to learn coding with " 
-              + str(online_res_percentage) + "%" + " of the respondents" )
-
-        # prints the highest paying job of a developer
-        comp = compensation(file)
-        highest_comp_job = max(comp, key=lambda x: comp[x])
-        highest_comp = round(max(comp.values()))
-        print(
-            highest_comp_job
-            + " is the highest paying job with $"
-            + str(highest_comp)
-            + " yearly"
-        )
-
-        # prints the years of coding experience with corresponding average yearly compensation in ascending order
-        # also prints a scatter plot of relationship of coding experience and compensation
-        comp_based_exp = coding_exp_and_comp(file)
-        sorted_exp = dict(sorted(comp_based_exp.items(), key=lambda item: item[1]))
-
-
-        plt.scatter(*zip(*comp_based_exp.items()))
-        plt.xlabel("Years of Experience")
-        plt.ylabel("Average Compensation")
-        plt.show()
-
-        print("As we can see in the graph, coding experience doesn't affect the level of pay of the developers")
-'''
-
-
-########## uncomment to list the average yearly pay per age ###############
-'''
-        for exp, comp in sorted_exp.items():
-            comp = "{:,}".format(round(comp))
-
-            if exp == 0.5:
-                print("Less than 1 year of experience: $" + comp + " per year")
-            elif exp == 51:
-                print("More than 50 years of experience: $" + comp + " per year")
-            else:
-                print(str(exp) + " years of experience: $" + comp + " per year")
-
-'''
-
