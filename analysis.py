@@ -67,7 +67,7 @@ def online_resources_2_learn_code(file):
     return dict(learn_code_online_dict)
 
 
-# returns the number of respondents who have no answer
+# returns the number of respondents who have no answer in column x
 def no_answer(file, x):
     ctr = 0
 
